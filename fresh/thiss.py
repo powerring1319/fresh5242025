@@ -65,14 +65,8 @@ def setup_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    # Update paths
-    possible_paths = [
-        "/usr/bin/google-chrome",
-        "/usr/bin/chromium",
-        "/usr/bin/chromium-browser"
-    ]
-
-    for path in possible_paths:
+    # Check and use available Chrome path
+    for path in ["/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"]:
         if os.path.exists(path):
             chrome_options.binary_location = path
             break
@@ -81,6 +75,7 @@ def setup_driver():
 
     service = Service("/usr/local/bin/chromedriver")
     return webdriver.Chrome(service=service, options=chrome_options)
+
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
     try:
