@@ -4,7 +4,7 @@ services:
     runtime: python
     buildCommand: |
       apt-get update && \
-      apt-get install -y chromium chromium-driver && \
+      apt-get install -y chromium-driver chromium && \
       poetry install
     startCommand: poetry run start
     envVars:
