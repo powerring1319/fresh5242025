@@ -1,7 +1,10 @@
 services:
   - type: web
-    name: selenium-scraper
-    env: python
+    name: fresh5242025-1
+    env: docker
+    dockerfilePath: ./Dockerfile
     plan: free
-    buildCommand: docker build -t fresh .
-    startCommand: docker run -p 10000:10000 fresh
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000
