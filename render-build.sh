@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 set -o errexit
-set -o xtrace  # Echo all commands for debugging
+set -o xtrace
 
-# Update system and install Chromium + matching chromedriver
+# Install Chromium and Chromedriver
 apt-get update
-apt-get install -y chromium chromium-driver wget unzip curl
 
-# Ensure correct symlinks
-ln -sf /usr/bin/chromium /usr/bin/google-chrome
-ln -sf /usr/lib/chromium/chromedriver /usr/local/bin/chromedriver
+# Try both common Chromium paths and drivers
+apt-get install -y chromium-browser chromium-chromedriver wget unzip curl
 
-# Log check
-ls -l /usr/local/bin/chromedriver
+# Symlink to expected paths for compatibility
+ln -sf /usr/bin/chromium-browser /usr/bin/chromium || true
+ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver || true
+ln -sf /usr/lib/chromium/chromedriver /usr/local/bin/chromedriver || true
+
+# Log installed versions for debugging
 which chromium || which chromium-browser || echo "Chromium not found"
-chromium --version || true
+chromium-browser --version || chromium --version || true
 chromedriver --version || true
 
 # Install Python dependencies
