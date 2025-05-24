@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from PIL import Image
-
+import os
 # Constants
 URL = "https://gps.freshliance.com/"
 EMAIL = "seton@sotechafrica.com"
@@ -29,7 +29,7 @@ app = FastAPI()
 is_scraping_active = False  # Track if scraping is running
 
 
-def setup_driver():
+def zsetup_driverz():
     """Sets up the Chrome WebDriver in headless mode for faster processing."""
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -42,7 +42,17 @@ def setup_driver():
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
+def setup_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.binary_location = os.getenv("GOOGLE_CHROME_BIN", "/usr/bin/chromium")
 
+    service = Service(executable_path=os.getenv("CHROMEDRIVER_PATH", "/usr/bin/chromedriver"))
+
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    return driver
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
     try:
