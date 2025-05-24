@@ -57,20 +57,18 @@ def setup_driverre():
 
     return webdriver.Chrome(service=service, options=chrome_options)
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+
 import shutil
 import os
 
 def setup_driver():
-    chrome_path = shutil.which("chromium") or shutil.which("chromium-browser")
-    driver_path = shutil.which("chromedriver")
+    chrome_path = os.path.abspath("bin/chrome")
+    chromedriver_path = os.path.abspath("bin/chromedriver")
 
     print("🔍 chromium path:", chrome_path)
-    print("🔍 chromedriver path:", driver_path)
+    print("🔍 chromedriver path:", chromedriver_path)
 
-    if not chrome_path or not driver_path:
+    if not os.path.exists(chrome_path) or not os.path.exists(chromedriver_path):
         raise Exception("Chromium not found!")
 
     chrome_options = Options()
@@ -79,10 +77,9 @@ def setup_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    service = Service(driver_path)
+    service = Service(chromedriver_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
-
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
     try:
