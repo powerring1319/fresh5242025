@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: selenium-scraper
+    env: python
+    plan: free
+    buildCommand: ./render-build.sh
+    startCommand: poetry run start
+    runtime: python
+    repo: https://github.com/yourusername/your-repo-name
+    region: oregon
+    branch: main

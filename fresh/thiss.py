@@ -42,7 +42,7 @@ def zsetup_driverz():
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
-def setup_driver():
+def setup_driverre():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
@@ -55,6 +55,16 @@ def setup_driver():
     chrome_options.binary_location = chrome_bin
     service = Service(executable_path=chrome_driver_path)
 
+    return webdriver.Chrome(service=service, options=chrome_options)
+
+def setup_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = "/usr/bin/chromium"
+
+    service = Service("/usr/bin/chromedriver")
     return webdriver.Chrome(service=service, options=chrome_options)
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
