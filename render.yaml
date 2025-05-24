@@ -3,5 +3,5 @@ services:
     name: selenium-scraper
     env: python
     plan: free
-    buildCommand: ./render-build.sh
-    startCommand: poetry run start
+    buildCommand: docker build -t fresh .
+    startCommand: docker run -p 10000:10000 fresh
