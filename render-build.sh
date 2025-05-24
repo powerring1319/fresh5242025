@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
-
-# Exit on error
 set -o errexit
 
-# Install Chromium and Chromedriver
+# Install dependencies
 apt-get update
 apt-get install -y wget unzip curl
-apt-get install -y chromium chromium-driver
 
-# Set environment variables
-export CHROME_BIN=/usr/bin/chromium
-export PATH=$PATH:/usr/lib/chromium
+# Install Chromium
+apt-get install -y chromium
 
-# Install project dependencies
+# Install Chromedriver (matching version)
+CHROME_VERSION=$(chromium --version | grep -oP '\d+\.\d+\.\d+')
+CHROMEDRIVER_VERSION=$(curl -sS "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE")
+
+wget -O chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip"
+unzip chromedriver.zip
+mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+chmod +x /usr/local/bin/chromedriver
+rm -rf chromedriver.zip chromedriver-linux64
+
+# Install Python dependencies
 poetry install --no-root

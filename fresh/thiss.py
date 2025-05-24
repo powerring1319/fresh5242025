@@ -62,9 +62,9 @@ def setup_driver():
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.binary_location = "/usr/bin/chromium"
+    chrome_options.binary_location = "/usr/bin/chromium"  # Chromium on Debian-based systems
 
-    service = Service("/usr/bin/chromedriver")
+    service = Service("/usr/local/bin/chromedriver")  # Location we set in render-build.sh
     return webdriver.Chrome(service=service, options=chrome_options)
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
