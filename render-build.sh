@@ -2,21 +2,27 @@
 set -o errexit
 set -o xtrace
 
-# Install Chromium and Chromedriver
+# Install Chromium & Chromedriver
 apt-get update
+apt-get install -y wget unzip curl gnupg
 
-# Try both common Chromium paths and drivers
-apt-get install -y chromium-browser chromium-chromedriver wget unzip curl
+# Add Chromium stable source and install it
+curl -sSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/chrome-keyring.gpg
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main' \
+    > /etc/apt/sources.list.d/google-chrome.list
 
-# Symlink to expected paths for compatibility
-ln -sf /usr/bin/chromium-browser /usr/bin/chromium || true
-ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver || true
-ln -sf /usr/lib/chromium/chromedriver /usr/local/bin/chromedriver || true
+apt-get update
+apt-get install -y google-chrome-stable
 
-# Log installed versions for debugging
-which chromium || which chromium-browser || echo "Chromium not found"
-chromium-browser --version || chromium --version || true
-chromedriver --version || true
+# Install matching Chromedriver
+CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+")
+CHROMEDRIVER_VERSION=$(curl -sSL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}")
+wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+unzip /tmp/chromedriver.zip -d /usr/local/bin/
+chmod +x /usr/local/bin/chromedriver
 
-# Install Python dependencies
+# Link the browser for Selenium
+ln -sf /usr/bin/google-chrome /usr/bin/chromium || true
+
+# Install Python deps
 poetry install --no-root

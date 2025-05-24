@@ -59,22 +59,28 @@ def setup_driverre():
 
 def setup_driver():
     
+
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    # Find installed Chromium binary
-    if os.path.exists("/usr/bin/chromium"):
-        chrome_options.binary_location = "/usr/bin/chromium"
-    elif os.path.exists("/usr/bin/chromium-browser"):
-        chrome_options.binary_location = "/usr/bin/chromium-browser"
+    # Update paths
+    possible_paths = [
+        "/usr/bin/google-chrome",
+        "/usr/bin/chromium",
+        "/usr/bin/chromium-browser"
+    ]
+
+    for path in possible_paths:
+        if os.path.exists(path):
+            chrome_options.binary_location = path
+            break
     else:
         raise Exception("Chromium not found!")
 
     service = Service("/usr/local/bin/chromedriver")
     return webdriver.Chrome(service=service, options=chrome_options)
-
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
     try:
