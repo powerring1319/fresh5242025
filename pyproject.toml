@@ -14,7 +14,7 @@ webdriver-manager = ">=4.0.1"
 pytesseract = ">=0.3.10"
 
 [tool.poetry.scripts]
-start = "uvicorn fresh.thiss:app --host 0.0.0.0 --port 10000"
+start = "fresh.main:run"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
