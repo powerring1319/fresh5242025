@@ -58,7 +58,7 @@ def setup_driverre():
     return webdriver.Chrome(service=service, options=chrome_options)
 
 def setup_driver():
-    
+
     import os
     import shutil
 
