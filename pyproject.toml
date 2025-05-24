@@ -3,7 +3,7 @@ name = "fresh"
 version = "0.1.0"
 description = "Freshliance GPS Scraper"
 authors = [
-    {name = "Power", email = "powers@gmail.com"}
+     "Power powers@gmail.com"
 ]
 readme = "README.md"
 requires-python = ">=3.8"
