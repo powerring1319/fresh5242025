@@ -62,8 +62,11 @@ import shutil
 import os
 
 def setup_driver():
-    chrome_path = "./bin/chrome"
-    chromedriver_path = "./bin/chromedriver"
+    chrome_path = os.path.abspath("./bin/chrome")
+    chromedriver_path = os.path.abspath("./bin/chromedriver")
+
+    print(f"🔍 chromium path: {chrome_path}")
+    print(f"🔍 chromedriver path: {chromedriver_path}")
 
     if not os.path.exists(chrome_path) or not os.access(chrome_path, os.X_OK):
         raise Exception("Chromium binary is missing or not executable!")
