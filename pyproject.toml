@@ -7,7 +7,6 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.8"
-dynamic = ["version"]
 
 dependencies = [
     "fastapi>=0.109.2",
@@ -17,11 +16,6 @@ dependencies = [
     "pytesseract>=0.3.10"
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0"
-]
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -29,14 +23,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "fresh"
 version = "0.1.0"
-description = "Freshliance GPS Scraper"
-authors = ["Your Name <you@example.com>"]
-readme = "README.md"
-
-# Corrected packages array format
-[[tool.poetry.packages]]
-include = "fresh"
-from = "src"
 
 [tool.poetry.scripts]
 start = "uvicorn fresh.thiss:app --host 0.0.0.0 --port 10000"
