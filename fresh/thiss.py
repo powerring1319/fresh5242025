@@ -57,32 +57,31 @@ def setup_driverre():
 
     return webdriver.Chrome(service=service, options=chrome_options)
 
-def setup_driver():
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import shutil
+import os
 
-    import os
-    import shutil
+def setup_driver():
+    chrome_path = shutil.which("chromium") or shutil.which("chromium-browser")
+    driver_path = shutil.which("chromedriver")
+
+    print("🔍 chromium path:", chrome_path)
+    print("🔍 chromedriver path:", driver_path)
+
+    if not chrome_path or not driver_path:
+        raise Exception("Chromium not found!")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless=new")
+    chrome_options.binary_location = chrome_path
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    # Debugging: Show what binaries are available
-    print("google-chrome path:", shutil.which("google-chrome"))
-    print("chromium path:", shutil.which("chromium"))
-    print("chromedriver path:", shutil.which("chromedriver"))
-
-    # Common binary paths
-    for path in ["/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"]:
-        if os.path.exists(path):
-            chrome_options.binary_location = path
-            break
-    else:
-        raise Exception("Chromium not found!")
-
-    service = Service("/usr/local/bin/chromedriver")
-    return webdriver.Chrome(service=service, options=chrome_options)
-
+    service = Service(driver_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    return driver
 
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
