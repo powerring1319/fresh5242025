@@ -59,13 +59,20 @@ def setup_driverre():
 
 def setup_driver():
     
+    import os
+    import shutil
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    # Check and use available Chrome path
+    # Debugging: Show what binaries are available
+    print("google-chrome path:", shutil.which("google-chrome"))
+    print("chromium path:", shutil.which("chromium"))
+    print("chromedriver path:", shutil.which("chromedriver"))
+
+    # Common binary paths
     for path in ["/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"]:
         if os.path.exists(path):
             chrome_options.binary_location = path
@@ -75,6 +82,7 @@ def setup_driver():
 
     service = Service("/usr/local/bin/chromedriver")
     return webdriver.Chrome(service=service, options=chrome_options)
+
 
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
