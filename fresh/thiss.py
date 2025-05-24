@@ -68,8 +68,10 @@ def setup_driver():
     print("🔍 chromium path:", chrome_path)
     print("🔍 chromedriver path:", chromedriver_path)
 
-    if not os.path.exists(chrome_path) or not os.path.exists(chromedriver_path):
-        raise Exception("Chromium not found!")
+    if not (os.path.exists(chrome_path) and os.access(chrome_path, os.X_OK)):
+        raise Exception("Chromium binary is missing or not executable!")
+    if not (os.path.exists(chromedriver_path) and os.access(chromedriver_path, os.X_OK)):
+        raise Exception("Chromedriver binary is missing or not executable!")
 
     chrome_options = Options()
     chrome_options.binary_location = chrome_path
@@ -77,7 +79,7 @@ def setup_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    service = Service(chromedriver_path)
+    service = Service(executable_path=chromedriver_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 def extract_captcha(driver):
