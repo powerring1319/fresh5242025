@@ -62,25 +62,22 @@ import shutil
 import os
 
 def setup_driver():
-    chrome_path = os.path.abspath("bin/chrome")
-    chromedriver_path = os.path.abspath("bin/chromedriver")
+    chrome_path = "./bin/chrome"
+    chromedriver_path = "./bin/chromedriver"
 
-    print("🔍 chromium path:", chrome_path)
-    print("🔍 chromedriver path:", chromedriver_path)
-
-    if not (os.path.exists(chrome_path) and os.access(chrome_path, os.X_OK)):
+    if not os.path.exists(chrome_path) or not os.access(chrome_path, os.X_OK):
         raise Exception("Chromium binary is missing or not executable!")
-    if not (os.path.exists(chromedriver_path) and os.access(chromedriver_path, os.X_OK)):
+    if not os.path.exists(chromedriver_path) or not os.access(chromedriver_path, os.X_OK):
         raise Exception("Chromedriver binary is missing or not executable!")
 
-    chrome_options = Options()
-    chrome_options.binary_location = chrome_path
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    options = Options()
+    options.binary_location = chrome_path
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
     service = Service(executable_path=chromedriver_path)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 def extract_captcha(driver):
     """Extracts CAPTCHA text using OCR."""
