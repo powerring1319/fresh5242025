@@ -6,7 +6,7 @@ authors = ["Power <powers@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "fresh" }]
 # Optional: specify your Python version
-requires-python = ">=3.8"
+#requires-python = ">=3.8"
 
 [tool.poetry.dependencies]
 python = ">=3.8"
